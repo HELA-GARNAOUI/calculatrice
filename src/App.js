@@ -1,28 +1,41 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [input, setInput] = useState('');
+
+  const handleClick = (value) => {
+    if (value === '=') {
+      try {
+        setInput(eval(input)); // Evaluate the expression
+      } catch {
+        setInput('Error');
+      }
+    } else if (value === 'C') {
+      setInput(''); // Clear the input
+    } else {
+      setInput(input + value); // Append the clicked value
+    }
+  };
+
   return (
     <div className="App">
       <h1>Calculatrice</h1>
-      <table>
-        <thead>
-          <tr>
-            <th colSpan={4}>Calculator Keypad</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colSpan={4}>
-              <input type="text" value="Invalid Input !!!" readOnly />
-            </td>
-          </tr>
-          <tr><td>1</td><td>2</td><td>3</td><td>+</td></tr>
-          <tr><td>4</td><td>5</td><td>6</td><td>-</td></tr>
-          <tr><td>7</td><td>8</td><td>9</td><td>*</td></tr>
-          <tr><td>.</td><td>0</td><td>=</td><td>/</td></tr>
-        </tbody>
-      </table>
+      <div className="calculator">
+        <input
+          type="text"
+          value={input}
+          readOnly
+          className="display"
+        />
+        <div className="keypad">
+          {['1', '2', '3', '+', '4', '5', '6', '-', '7', '8', '9', '*', '.', '0', '=', '/', 'C'].map((btn) => (
+            <button key={btn} onClick={() => handleClick(btn)}>
+              {btn}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
